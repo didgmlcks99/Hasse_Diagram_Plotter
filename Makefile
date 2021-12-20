@@ -1,10 +1,10 @@
 #Makefile
 CC = gcc
 CFLAG = -W -Wall
-TARGET = langdump 
-OBJECTS = langdump.c
+TARGET = hasse 
+OBJECTS = hasse.c
 all = $(TARGET)
 $(TARGET) : $(OBJECTS)
 	$(CC) $(CFLAG) $^ -o $@
 clean :
-	rm langdump
+	rm hasse
