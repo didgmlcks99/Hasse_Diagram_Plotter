@@ -5,6 +5,6 @@ TARGET = hasse
 OBJECTS = hasse.c
 all = $(TARGET)
 $(TARGET) : $(OBJECTS)
-	$(CC) $(CFLAG) $^ -o $@
+	$(CC) $(CFLAG) ezdib.c $^ -o $@ -lm
 clean :
 	rm hasse
