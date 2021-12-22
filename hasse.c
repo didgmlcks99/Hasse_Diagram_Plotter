@@ -111,9 +111,16 @@ void make_bmp(char *filename, struct Node *nodes, int nodes_cnt, int max_lvl, in
 
     // Create image
     // x, y, ?, ?
-    int x_size = (300*max_children);
-    int y_size = (max_lvl + 1)*250;
-    hDib = ezd_create(x_size, y_size*(-1), 32, 0);
+    printf("max_children: %d\n", max_children);
+    printf("max_lvl: %d\n", max_lvl);
+
+    int x_size = (300 * max_children);
+    int y_size = (max_lvl + 1) * 250;
+    hDib = ezd_create(x_size, y_size * (-1), 32, 0);
+    // hDib = ezd_create(1000, -1000, 32, 0);
+
+    printf("x_size: %d\n", x_size);
+    printf("y_size: %d\n", y_size);
 
     // Fill in the background
     ezd_fill(hDib, 0x404040);
@@ -151,8 +158,8 @@ void make_bmp(char *filename, struct Node *nodes, int nodes_cnt, int max_lvl, in
             int id = diagram_index[i][k];
             int lvl = nodes[id].level;
 
-            nodes[id].y = (y_size-100) - (lvl * 250);
-            nodes[id].x = (600 / index) + ((x_size / index) * k) + (40 * (lvl % 2));
+            nodes[id].y = (y_size - 100) - (lvl * 250);
+            nodes[id].x = (x_size / (index + 1)) + (((x_size / index) * k) - 50) + (lvl % 2);
 
             int y = nodes[id].y;
             int x = nodes[id].x;
@@ -412,16 +419,20 @@ char *trim(char *str)
     return str;
 }
 
-void validate_input(struct Node *nodes, int nodes_cnt){
-    if(nodes_cnt > 32){
+void validate_input(struct Node *nodes, int nodes_cnt)
+{
+    if (nodes_cnt > 32)
+    {
         printf("[INVALID INPUT] input data file contains information of more than 32 vertices.\n");
         printf("--> input data file contains %d vertices\n", nodes_cnt);
         exit(0);
     }
 
-    for(int i=0; i<nodes_cnt; i++){
+    for (int i = 0; i < nodes_cnt; i++)
+    {
         int node_length = (int)strlen(nodes[i].name);
-        if(node_length > 16){
+        if (node_length > 16)
+        {
             printf("[INVALID INPUT] a node can have at most 16 alphanumeric characters.\n");
             printf("--> %s has a character length of %d\n", nodes[i].name, (int)strlen(nodes[i].name));
             exit(0);
@@ -429,28 +440,36 @@ void validate_input(struct Node *nodes, int nodes_cnt){
     }
 }
 
-int get_max_lvl(struct Node *nodes, int nodes_cnt){
+int get_max_lvl(struct Node *nodes, int nodes_cnt)
+{
     int max_lvl = -1;
-    for(int i=0; i<nodes_cnt; i++){
-        if(nodes[i].level > max_lvl) max_lvl = nodes[i].level;
+    for (int i = 0; i < nodes_cnt; i++)
+    {
+        if (nodes[i].level > max_lvl)
+            max_lvl = nodes[i].level;
     }
     return max_lvl;
 }
 
-int get_max_children(int max_lvl, struct Node *nodes, int nodes_cnt){
+int get_max_children(int max_lvl, struct Node *nodes, int nodes_cnt)
+{
     int max_each_lvl[max_lvl];
-    for(int i=0; i<max_lvl; i++){
+    for (int i = 0; i < max_lvl; i++)
+    {
         max_each_lvl[i] = 0;
     }
 
-    for(int i=0; i<nodes_cnt; i++){
+    for (int i = 0; i < nodes_cnt; i++)
+    {
         int lvl = nodes[i].level;
         max_each_lvl[lvl]++;
     }
 
     int max_children = -1;
-    for(int i=0; i<max_lvl; i++){
-        if(max_each_lvl[i] > max_children) max_children = max_each_lvl[i];
+    for (int i = 0; i < max_lvl; i++)
+    {
+        if (max_each_lvl[i] > max_children)
+            max_children = max_each_lvl[i];
     }
 
     return max_children;
